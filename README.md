@@ -146,6 +146,8 @@ Start the docker container:
 docker run -p 8000:80 -i -t timing
 ```
 
+Consume the API using a `Token`:
+
 ```
 curl -X GET http://127.0.0.1:8000/users/ -H 'Authorization: Token c346f10f02107ce7e12386be3abbb9032d19af20'
 ```
