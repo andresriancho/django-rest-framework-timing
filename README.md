@@ -132,5 +132,17 @@ for i in xrange(100):
 
 # Notes
 
+## Consuming the API
+
+Start
+
+```
+python manage.py runserver
+```
+
+```
+curl -X GET http://127.0.0.1:8000/users/ -H 'Authorization: Token c346f10f02107ce7e12386be3abbb9032d19af20'
+```
+
 ## Django Admin
 admin / password123
