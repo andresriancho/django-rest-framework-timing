@@ -12,6 +12,12 @@ pip install -r requirements.txt
 The current version uses a SQLite database and Token authentication for
 the REST API.
 
+Build the docker container:
+
+```bash
+docker build -t timing .
+```
+
 The following are valid username / API key pairs:
  
 ```
@@ -134,10 +140,10 @@ for i in xrange(100):
 
 ## Consuming the API
 
-Start
+Start the docker container:
 
 ```
-python manage.py runserver
+docker run -p 8000:80 -i -t timing
 ```
 
 ```
