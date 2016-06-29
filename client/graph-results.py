@@ -1,45 +1,33 @@
+import requests
+requests.packages.urllib3.disable_warnings()
+
 import plotly
 
 from plotly.graph_objs import Histogram, Layout, Figure
+from utils.read_samples import read_timing_samples
 
-
-def read_samples(filename):
-    samples = []
-
-    for line in file(filename):
-        line = line.strip()
-
-        if not line:
-            continue
-
-        try:
-            timing = float(line)
-        except:
-            continue
-
-        samples.append(timing)
-
-    return samples
-
-x0 = read_samples('token-timing-224a%s.txt' % ('0' * 36,))
-x1 = read_samples('token-timing-224c%s.txt' % ('0' * 36,))
+x0 = read_timing_samples('token-timing.db', 'db_init', '224a93060c0dd4fb931d05083b4cb7b6a8000000')
+x1 = read_timing_samples('token-timing.db', 'db_init', '224a93060c0dd4fb931d05083b4cb7b6a9000000')
 
 sample_ok = Histogram(
     x=x0,
     name='Success (takes longer)',
-    histnorm='count'
+    histnorm='count',
+    opacity=0.75
 )
 
 sample_fail = Histogram(
     x=x1,
     name='Fail',
-    histnorm='count'
+    histnorm='count',
+    opacity=0.75
 )
+
 data = [sample_ok, sample_fail]
 layout = Layout(
-    barmode='stack',
+    barmode='overlay',
     xaxis=dict(
-        title='Value'
+        title='Response time (ms)'
     ),
     yaxis=dict(
         title='Count'
