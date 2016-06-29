@@ -124,7 +124,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    #'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # This is the default TokenAuthentication class from DRF
+        #'rest_framework.authentication.TokenAuthentication',
+
+        # This one we use for tests, it does a "slow compare"
+        'timing.example.authentication.token.DelayTokenAuthentication',
+    ),
     'PAGE_SIZE': 10
 }

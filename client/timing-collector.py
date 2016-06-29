@@ -20,7 +20,7 @@ URL = 'http://127.0.0.1:8000/users/'
 NUM_SAMPLES = 10000
 OUTPUT_DB = 'token-timing.db'
 
-TEST_NAME = 'db_init'
+TEST_NAME = 'slow-c'
 
 
 def generate_test_token(known_valid, test_char, missing_chars):
