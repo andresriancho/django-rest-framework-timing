@@ -128,8 +128,11 @@ REST_FRAMEWORK = {
         # This is the default TokenAuthentication class from DRF
         #'rest_framework.authentication.TokenAuthentication',
 
-        # This one we use for tests, it does a "slow compare"
-        'timing.example.authentication.token.DelayTokenAuthentication',
+        # This one we use for tests, it does a "slow compare" with time.sleep
+        #'timing.example.authentication.token.DelayTokenAuthentication',
+
+        # This one we use for tests, it does a != string compare
+        'timing.example.authentication.eqcmp.EqCmpTokenAuthentication',
     ),
     'PAGE_SIZE': 10
 }
