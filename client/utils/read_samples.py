@@ -4,7 +4,22 @@ from CodernityDB.database import Database
 from CodernityDB.hash_index import HashIndex
 from CodernityDB.index import IndexConflict
 from CodernityDB.database import PreconditionsException
+from CodernityDB.storage import IU_Storage
 
+#
+# http://stackoverflow.com/a/34708989/1347554
+#
+def monkey_get(self, start, size, status='c'):
+    if status == 'd':
+        return None
+    else:
+        self._f.seek(start)
+        return self.data_from(self._f.read(size))
+
+IU_Storage.get = monkey_get
+#
+# http://stackoverflow.com/a/34708989/1347554
+#
 
 class WithTestNameIndex(HashIndex):
 
@@ -38,11 +53,11 @@ def read_samples(db_filename, test_name):
         yield data
 
 
-def read_timing_samples(db_filename, test_name, token, key='x_runtime'):
+def read_timing_samples(db_filename, test_name, token, key):
     timing_data = []
 
     for data in read_samples(db_filename, test_name):
-        if data['token'] == token:
+        if data['token_1'] == token or data['token_0'] == token:
             timing_data.append(data[key])
 
     return timing_data
