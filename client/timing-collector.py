@@ -30,11 +30,13 @@ def generate_test_token(known_valid, test_char, missing_chars):
 
 
 def send_with_naive_timing(session, url, token):
-    start = time.time()
-    response = session.get(url, headers={'Authorization': 'Token %s' % token})
-    end = time.time()
+    response = session.get(url,
+                           allow_redirects=False,
+                           verify=False,
+                           headers={'Authorization': 'Token %s' % token})
+    naive_time = response.elapsed.microseconds
 
-    return response, end-start
+    return response, naive_time
 
 
 def send_requests(db, known_valid, test_case_1, test_case_2, missing_chars):
@@ -47,6 +49,11 @@ def send_requests(db, known_valid, test_case_1, test_case_2, missing_chars):
     :return: None. All is stored in the DB
     """
     session = requests.Session()
+
+    http_adapter = requests.adapters.HTTPAdapter(max_retries=3)
+
+    session.mount('http://', http_adapter)
+    session.mount('https://', http_adapter)
 
     token_test_case_1 = generate_test_token(known_valid,
                                             test_case_1,
@@ -79,7 +86,7 @@ def send_requests(db, known_valid, test_case_1, test_case_2, missing_chars):
 
         for j, (response, naive_time, token) in enumerate(tmp_results.values()):
             data.update({'x_runtime_%s' % j: response.headers['X-Runtime'],
-                         'naive_time_%s' % j: naive_time,
+                         'userspace_rtt_microseconds_%s' % j: naive_time,
                          'token_%s' % j: token})
 
         db.insert(data)
