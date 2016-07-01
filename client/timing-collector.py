@@ -5,6 +5,8 @@ import time
 import sys
 
 from utils.progress import progress
+from utils.os_utils import (setCPUAffinity, setLowLatency,
+                            setPowersave, setTCPTimestamps)
 from CodernityDB.database import Database
 from CodernityDB.index import IndexConflict
 
@@ -32,6 +34,9 @@ def generate_test_token(known_valid, test_char, missing_chars):
 def send_with_naive_timing(session, url, token):
     # Prepare the request this way to avoid the auto-added User-Agent and Accept
     # headers.
+    #
+    # TODO: What happens if I want to send data? Do I need to add the
+    #       Content-Type header manually?
     req = requests.Request('GET',
                            url,
                            headers={'Authorization': 'Token %s' % token,
@@ -122,16 +127,35 @@ def init_db():
     return db
 
 
+def init_os_settings():
+    setCPUAffinity()
+    setLowLatency(True)
+    setPowersave(False)
+    tcpts_previous = setTCPTimestamps(True)
+    return tcpts_previous
+
+
+def clear_os_settings(tcpts_previous):
+    setLowLatency(False)
+    setPowersave(True)
+    setTCPTimestamps(tcpts_previous)
+
+
 if __name__ == '__main__':
     FAIL_1 = '7'
     FAIL_2 = '0'
     FAIL_3 = '1'
     SUCCESS = '8'
 
+    tcpts_previous = False
+
     try:
+        tcpts_previous = init_os_settings()
         db = init_db()
         warm_up(generate_test_token(VALID_TOKEN_START, '0', MISSING_CHAR_LENGTH))
         send_requests(db, VALID_TOKEN_START, FAIL_1, FAIL_2, MISSING_CHAR_LENGTH)
     except KeyboardInterrupt:
         print('')
         print('User pressed Ctrl+C.')
+    finally:
+        clear_os_settings(tcpts_previous)

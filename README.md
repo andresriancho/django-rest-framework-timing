@@ -5,6 +5,8 @@ on [Django REST framework quick start tutorial](http://www.django-rest-framework
 # Installation
 
 ```bash
+cd djanto-rest-framework-timing/
+virtualenv venv
 pip install -r requirements.txt
 pip install -r client/requirements.txt
 ```
@@ -157,11 +159,16 @@ curl -X GET http://127.0.0.1:8000/users/ -H 'Authorization: Token 224a93060c0dd4
 
 ## Getting Timing Samples
 
+Please note that this tool is Linux-specific due to the OS tricks implemented
+in the `os_utils.py` module.
+
 Edit the constants in `timing-collector.py` and then:
 
 ```
 cd client
-python timing-collector.py
+sudo -s -H
+source venv/bin/activate
+python timing-collector.py sample-name
 ```
 
 ## Analyzing Samples
@@ -169,5 +176,5 @@ python timing-collector.py
 Edit the sample input file names in `graph-results.py` and then:
 
 ```
-python graph-results.py
+python graph-results.py sample-name
 ```

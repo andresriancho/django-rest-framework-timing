@@ -91,3 +91,6 @@ ENV/
 # Temp files
 token-timing.db/
 client/temp-plot.html
+
+# ide
+.idea/
