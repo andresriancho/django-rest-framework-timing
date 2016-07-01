@@ -30,10 +30,18 @@ def generate_test_token(known_valid, test_char, missing_chars):
 
 
 def send_with_naive_timing(session, url, token):
-    response = session.get(url,
-                           allow_redirects=False,
-                           verify=False,
-                           headers={'Authorization': 'Token %s' % token})
+    # Prepare the request this way to avoid the auto-added User-Agent and Accept
+    # headers.
+    req = requests.Request('GET',
+                           url,
+                           headers={'Authorization': 'Token %s' % token,
+                                    'Accept-Encoding': 'identity'}
+                           )
+    prepared_request = req.prepare()
+
+    response = session.send(prepared_request,
+                            allow_redirects=False,
+                            verify=False)
     naive_time = response.elapsed.microseconds
 
     return response, naive_time
