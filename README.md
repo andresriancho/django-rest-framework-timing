@@ -8,12 +8,11 @@ on [Django REST framework quick start tutorial](http://www.django-rest-framework
 cd djanto-rest-framework-timing/
 virtualenv venv
 pip install -r requirements.txt
-pip install -r client/requirements.txt
 ```
 
 # Setup
-The current version uses a SQLite database and Token authentication for
-the REST API.
+The current version uses a SQLite database and Token authentication with
+a hard-coded key.
 
 Build the docker container:
 
@@ -157,24 +156,8 @@ Consume the API using a `Token`:
 curl -X GET http://127.0.0.1:8000/users/ -H 'Authorization: Token 224a93060c0dd4fb931d05083b4cb7b6a8c27df8'
 ```
 
-## Getting Timing Samples
+# Pico
 
-Please note that this tool is Linux-specific due to the OS tricks implemented
-in the `os_utils.py` module.
-
-Edit the constants in `timing-collector.py` and then:
-
-```
-cd client
-sudo -s -H
-source venv/bin/activate
-python timing-collector.py sample-name
-```
-
-## Analyzing Samples
-
-Edit the sample input file names in `graph-results.py` and then:
-
-```
-python graph-results.py sample-name
-```
+[Pico](https://github.com/andresriancho/pico) is a tool to automate the
+identification and exploitation of timing attacks. This repository is a
+ test tool for `pico`.
