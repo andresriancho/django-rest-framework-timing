@@ -19,7 +19,7 @@ MISSING_CHAR_LENGTH = len(VALID_TOKEN_GUESS)
 PADDING_CHAR = '0'
 
 URL = 'http://127.0.0.1:8000/users/'
-NUM_SAMPLES = 10000
+NUM_SAMPLES = 20000
 OUTPUT_DB = 'token-timing.db'
 
 TEST_NAME = sys.argv[1]
@@ -81,6 +81,7 @@ def send_requests(db, known_valid, test_case_1, test_case_2, missing_chars):
     print(' - %s' % token_test_case_2)
     print('')
     print('Test name: %s' % TEST_NAME)
+    print('Getting %s samples per test case' % NUM_SAMPLES)
 
     for i in xrange(NUM_SAMPLES):
 
@@ -153,7 +154,7 @@ if __name__ == '__main__':
         tcpts_previous = init_os_settings()
         db = init_db()
         warm_up(generate_test_token(VALID_TOKEN_START, '0', MISSING_CHAR_LENGTH))
-        send_requests(db, VALID_TOKEN_START, FAIL_1, FAIL_2, MISSING_CHAR_LENGTH)
+        send_requests(db, VALID_TOKEN_START, SUCCESS, FAIL_2, MISSING_CHAR_LENGTH)
     except KeyboardInterrupt:
         print('')
         print('User pressed Ctrl+C.')
