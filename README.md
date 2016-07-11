@@ -2,6 +2,9 @@
 Minimalistic Django REST framework to test timing attacks, heavily based
 on [Django REST framework quick start tutorial](http://www.django-rest-framework.org/tutorial/quickstart/).
 
+This repository is a test tool for [pico](https://github.com/andresriancho/pico),
+a tool to automate the identification and exploitation of timing attacks. 
+
 # Installation
 
 ```bash
@@ -155,9 +158,3 @@ Consume the API using a `Token`:
 ```
 curl -X GET http://127.0.0.1:8000/users/ -H 'Authorization: Token 224a93060c0dd4fb931d05083b4cb7b6a8c27df8'
 ```
-
-# Pico
-
-[Pico](https://github.com/andresriancho/pico) is a tool to automate the
-identification and exploitation of timing attacks. This repository is a
- test tool for `pico`.
