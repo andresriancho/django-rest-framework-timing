@@ -23,6 +23,24 @@ Build the docker container:
 docker build -t timing .
 ```
 
+The Django admin credentials are: `admin` / `password123`.
+
+# Notes
+
+## Consuming the API
+
+Start the docker container:
+
+```
+docker run -p 8000:80 -i -t timing
+```
+
+Consume the API using a `Token`:
+
+```
+curl -X GET http://127.0.0.1:8000/users/ -H 'Authorization: Token 224a93060c0dd4fb931d05083b4cb7b6a8c27df8'
+```
+
 The following are sorted API key / username pairs:
  
 ```
@@ -139,22 +157,4 @@ for i in xrange(100):
     new_user = User.objects.create_user(username, 'test%s@bonsai-sec.com' % i, 'password%s' % i)
     token = Token.objects.create(user=new_user)
     print('%s:%s' % (username, token.key))
-```
-
-The Django admin credentials are: `admin` / `password123`.
-
-# Notes
-
-## Consuming the API
-
-Start the docker container:
-
-```
-docker run -p 8000:80 -i -t timing
-```
-
-Consume the API using a `Token`:
-
-```
-curl -X GET http://127.0.0.1:8000/users/ -H 'Authorization: Token 224a93060c0dd4fb931d05083b4cb7b6a8c27df8'
 ```
